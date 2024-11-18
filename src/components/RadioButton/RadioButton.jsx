@@ -1,8 +1,14 @@
-import  { useState } from "react";
+import { useState } from "react";
 
-export default function RadioButton({ options, defaultValue }) {
-  // Set the selected state to the defaultValue passed as prop or the first option if no default is provided
+export default function RadioButton({ options, defaultValue, onChange }) {
+  // State untuk menyimpan pilihan yang sedang dipilih
   const [selected, setSelected] = useState(defaultValue || options[0]?.value);
+
+  // Fungsi untuk menangani perubahan pilihan
+  const handleSelection = (value) => {
+    setSelected(value); // Perbarui state lokal
+    if (onChange) onChange(value); // Panggil callback jika diberikan
+  };
 
   return (
     <div className="flex gap-4">
@@ -16,8 +22,8 @@ export default function RadioButton({ options, defaultValue }) {
             name="customRadio"
             value={option.value}
             checked={selected === option.value}
-            onChange={() => setSelected(option.value)}
-            className="hidden" // Hide default radio button
+            onChange={() => handleSelection(option.value)}
+            className="hidden" // Sembunyikan radio button default
           />
           <span
             className={`w-4 h-4 rounded-full flex items-center justify-center border ${
@@ -28,7 +34,7 @@ export default function RadioButton({ options, defaultValue }) {
             style={{ width: "16px", height: "16px", borderWidth: "1px" }}
           >
             {selected === option.value && (
-              <span className="w-2.5 h-2.5 bg-[#6173E6] rounded-full"></span>
+              <span className="w-2.5 h-2.5 bg-[#ffffff] rounded-full"></span>
             )}
           </span>
           <span
